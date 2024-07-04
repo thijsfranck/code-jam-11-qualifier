@@ -1,6 +1,7 @@
-from enum import auto, StrEnum
-import warnings
 import shlex
+import warnings
+from collections.abc import Callable
+from enum import StrEnum, auto
 
 MAX_QUOTE_LENGTH = 50
 
@@ -15,6 +16,9 @@ class VariantMode(StrEnum):
 
 class DuplicateError(Exception):
     """Error raised when there is an attempt to add a duplicate entry to a database"""
+
+
+Transformer = Callable[[str], str]
 
 
 def transform_to_uwu(quote: str) -> str:
@@ -83,7 +87,7 @@ def transform_to_piglatin(quote: str) -> str:
 
 class Quote:
 
-    transformers = {
+    transformers: dict[VariantMode, Transformer] = {
         VariantMode.NORMAL: lambda quote: quote,
         VariantMode.UWU: transform_to_uwu,
         VariantMode.PIGLATIN: transform_to_piglatin,
