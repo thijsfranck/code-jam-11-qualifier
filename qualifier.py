@@ -29,12 +29,12 @@ def transform_to_uwu(quote: str) -> str:
         .replace("R", "W")
     )
 
-    result = " ".join(
-        [
-            f"{word[0]}-{word}" if word.startswith(("u", "U")) else word
-            for word in base.split()
-        ]
-    )
+    words = base.split()
+    uwufied_words = [
+        f"{word[0]}-{word}" if word.startswith(("u", "U")) else word
+        for word in words
+    ]
+    result = " ".join(uwufied_words)
 
     if len(result) > MAX_QUOTE_LENGTH:
         warnings.warn("Quote too long, only partially transformed")
