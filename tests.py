@@ -47,7 +47,8 @@ class TestQuoteCreation(unittest.TestCase):
         with self.assertWarns(Warning) as wrn:
             qualifier.run_command(f'quote uwu "{test_case}"')
             self.assertTrue(str(qualifier.Database.quotes[-1]) == correct)
-        self.assertEqual("Quote too long, only partially transformed", str(wrn.warning))
+        self.assertEqual(
+            "Quote too long, only partially transformed", str(wrn.warning))
 
     def test_uwu_too_long(self):
         test_case = "It's time to d-d-d-d-d-d-d-d-d-d-d-d-d-d-d-d-d-d-d-ance unless..."
@@ -100,7 +101,8 @@ class TestQuoteCreation(unittest.TestCase):
                 self.assertEqual("Invalid command", str(exc.exception))
 
     def test_database_error(self):
-        test_case = "African or European swallow?"
+        test_case = qualifier.Quote(
+            "African or European swallow?", qualifier.VariantMode.NORMAL)
         qualifier.Database.quotes = [test_case]
 
         expected_output = "Quote has already been added previously\n"
@@ -138,7 +140,10 @@ class TestQuoteCreation(unittest.TestCase):
             "Quote 4 or wait... is it 3?"
         ]
 
-        qualifier.Database.quotes = quotes
+        qualifier.Database.quotes = [
+            qualifier.Quote(quote, qualifier.VariantMode.NORMAL)
+            for quote in quotes
+        ]
 
         correct = f"- {"\n- ".join(quotes)}\n"
 
@@ -167,7 +172,8 @@ class TestQuoteCreation(unittest.TestCase):
         self.assertEqual(added_quote.mode, "uwu")
 
     def test_create_variant_implemented(self):
-        quote = qualifier.Quote("Code golfers beware", qualifier.VariantMode.NORMAL)
+        quote = qualifier.Quote("Code golfers beware",
+                                qualifier.VariantMode.NORMAL)
         test_cases = (
             (qualifier.VariantMode.NORMAL, "Code golfers beware"),
             (qualifier.VariantMode.UWU, "Code gowfews bewawe"),
