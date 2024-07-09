@@ -44,9 +44,6 @@ def transform_to_uwu(quote: str) -> str:
         warnings.warn("Quote too long, only partially transformed")
         result = base
 
-    if result == quote:
-        raise ValueError("Quote was not modified")
-
     return result
 
 
@@ -79,9 +76,6 @@ def transform_to_piglatin(quote: str) -> str:
     if len(result) > MAX_QUOTE_LENGTH:
         result = quote
 
-    if result == quote:
-        raise ValueError("Quote was not modified")
-
     return result
 
 
@@ -104,7 +98,12 @@ class Quote:
         """
         Transforms the quote to the appropriate variant indicated by `self.mode` and returns the result
         """
-        return Quote.transformers[self.mode](self.quote)
+        result = Quote.transformers[self.mode](self.quote)
+
+        if result == self.quote:
+            raise ValueError("Quote was not modified")
+        
+        return result
 
 
 def run_command(command: str) -> None:
