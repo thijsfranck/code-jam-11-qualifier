@@ -59,8 +59,7 @@ def _word_to_piglatin(word: str) -> str:
     if first_vowel_idx == 0:
         return word + "way"
     elif first_vowel_idx is not None:
-        consonant_cluster = word[:first_vowel_idx]
-        return word[first_vowel_idx:] + consonant_cluster + "ay"
+        return word[first_vowel_idx:] + word[:first_vowel_idx] + "ay"
 
     return word
 
@@ -102,7 +101,7 @@ class Quote:
 
         if self.mode != VariantMode.NORMAL and result == self.quote:
             raise ValueError("Quote was not modified")
-        
+
         return result
 
 
