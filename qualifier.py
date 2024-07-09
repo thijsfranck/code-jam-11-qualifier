@@ -100,7 +100,7 @@ class Quote:
         """
         result = Quote.transformers[self.mode](self.quote)
 
-        if result == self.quote:
+        if self.mode != VariantMode.NORMAL and result == self.quote:
             raise ValueError("Quote was not modified")
         
         return result
