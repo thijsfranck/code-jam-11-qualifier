@@ -25,18 +25,11 @@ def transform_to_uwu(quote: str) -> str:
     """
     Transforms a quote to its uwu variant
     """
-    base = (
-        quote
-        .replace("l", "w")
-        .replace("L", "W")
-        .replace("r", "w")
-        .replace("R", "W")
-    )
+    base = quote.replace("l", "w").replace("L", "W").replace("r", "w").replace("R", "W")
 
     words = base.split()
     uwufied_words = [
-        f"{word[0]}-{word}" if word.startswith(("u", "U")) else word
-        for word in words
+        f"{word[0]}-{word}" if word.startswith(("u", "U")) else word for word in words
     ]
     result = " ".join(uwufied_words)
 
@@ -51,10 +44,7 @@ def _word_to_piglatin(word: str) -> str:
     """
     Transforms a word to its piglatin variant
     """
-    first_vowel_idx = next(
-        (i for i, c in enumerate(word) if c in "aeiou"),
-        None
-    )
+    first_vowel_idx = next((i for i, c in enumerate(word) if c in "aeiou"), None)
 
     if first_vowel_idx == 0:
         return word + "way"
@@ -79,7 +69,6 @@ def transform_to_piglatin(quote: str) -> str:
 
 
 class Quote:
-
     transformers: dict[VariantMode, Transformer] = {
         VariantMode.NORMAL: lambda quote: quote,
         VariantMode.UWU: transform_to_uwu,
@@ -128,9 +117,7 @@ def run_command(command: str) -> None:
     operation = args[0]
 
     if operation == "list":
-        list_items = [f"- {quote}" for quote in Database.get_quotes()]
-        print("\n".join(list_items))
-        return
+        Database.list_quotes()
 
     quote = args[-1]
 
@@ -168,3 +155,9 @@ class Database:
         if str(quote) in [str(quote) for quote in cls.quotes]:
             raise DuplicateError
         cls.quotes.append(quote)
+
+    @classmethod
+    def list_quotes(cls) -> None:
+        "Prints out the current quotes"
+        list_items = [f"- {quote}" for quote in cls.get_quotes()]
+        return print("\n".join(list_items))
